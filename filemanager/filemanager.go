@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"os"
+	"encoding/json"
 )
 func ReadLines(path string)([]string,error){
 	file,err:=os.Open(path)
@@ -23,4 +24,25 @@ func ReadLines(path string)([]string,error){
 	file.Close()
 	return lines,nil
 
+}
+
+func WriteJSON(path string,data interface{})error{
+	file ,err:=os.Create(path)
+	if err!=nil{
+		return errors.New("failed create file")
+	}
+	//scanner:=bufio.NewScanner(file)
+
+	encoder:=json.NewEncoder(file)
+	err=encoder.Encode(data)
+
+	if err!=nil{
+		return errors.New("failed to convert data to json")
+	}
+
+	file.Close()
+	return nil
+
+
+	
 }
